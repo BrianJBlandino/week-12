@@ -9,7 +9,7 @@ def update_board(current_board):
     and executes one step of Conway's game of life for this array."""
     
     # Create a copy to store the next state
-    new_board = np.zeros(board.shape, dtype=int)
+    new_board = np.zeros(current_board.shape, dtype=int)
     
     # Define neighbors' relative positions
     neighbors = [(-1, -1), (-1, 0), (-1, 1),
@@ -17,27 +17,29 @@ def update_board(current_board):
                  (1, -1),  (1, 0),  (1, 1)]
     
     # Iterate over each cell
-    for i in range(board.shape[0]):
-        for j in range(board.shape[1]):
+    for i in range(current_board.shape[0]):
+        for j in range(current_board.shape[1]):
             # Count live neighbors
             live_neighbors = sum(
-                board[(i + dx) % board.shape[0], (j + dy) % board.shape[1]]
+                current_board[(i + dx) % current_board.shape[0],
+                              (j + dy) % current_board.shape[1]]
                 for dx, dy in neighbors
             )
-                # Apply Conway's rules
-            if board[i, j] == 1:
+            
+            # Apply Conway's rules
+            if current_board[i, j] == 1:
                 # Currently alive
                 if live_neighbors < 2 or live_neighbors > 3:
-                    new_board[i, j] = 0  
+                    new_board[i, j] = 0
                 else:
-                    new_board[i, j] = 1  
+                    new_board[i, j] = 1
             else:
-                # Currently dead
+                # Currently dead; becomes alive if exactly 3 neighbors
                 if live_neighbors == 3:
                     new_board[i, j] = 1  
     
     # Setting the updated_board variable
-    updated_board = current_board
+    updated_board = new_board
     
     # Returning result
     return updated_board
