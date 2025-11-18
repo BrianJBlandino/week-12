@@ -11,6 +11,37 @@ def update_board(current_board):
 
     return updated_board
 
+def update_board(current_board):
+    """Creating a function that takes in a binary NumPy array,
+    and executes one step of Conway's game of life for this array."""
+    
+    # Create a copy to store the next state
+    new_board = np.zeros(board.shape, dtype=int)
+    
+    # Define neighbors' relative positions
+    neighbors = [(-1, -1), (-1, 0), (-1, 1),
+                 (0, -1),          (0, 1),
+                 (1, -1),  (1, 0),  (1, 1)]
+    
+    # Iterate over each cell
+    for i in range(board.shape[0]):
+        for j in range(board.shape[1]):
+            # Count live neighbors
+            live_neighbors = sum(
+                board[(i + dx) % board.shape[0], (j + dy) % board.shape[1]]
+                for dx, dy in neighbors
+            )
+                # Apply Conway's rules
+            if board[i, j] == 1:
+                # Currently alive
+                if live_neighbors < 2 or live_neighbors > 3:
+                    new_board[i, j] = 0  
+                else:
+                    new_board[i, j] = 1  
+            else:
+                # Currently dead
+                if live_neighbors == 3:
+                    new_board[i, j] = 1  
 
 def show_game(game_board, n_steps=10, pause=0.5):
     """
