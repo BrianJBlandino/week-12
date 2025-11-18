@@ -35,9 +35,11 @@ def update_board(current_board):
                 # Currently dead
                 if live_neighbors == 3:
                     new_board[i, j] = 1  
-                    
+    
+    # Setting the updated_board variable
     updated_board = current_board
     
+    # Returning result
     return updated_board
 
 
