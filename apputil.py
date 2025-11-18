@@ -4,13 +4,6 @@ import time
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-
-def update_board(current_board):
-    # your code here ...
-    updated_board = current_board
-
-    return updated_board
-
 def update_board(current_board):
     """Creating a function that takes in a binary NumPy array,
     and executes one step of Conway's game of life for this array."""
@@ -42,6 +35,11 @@ def update_board(current_board):
                 # Currently dead
                 if live_neighbors == 3:
                     new_board[i, j] = 1  
+                    
+    updated_board = current_board
+    
+    return updated_board
+
 
 def show_game(game_board, n_steps=10, pause=0.5):
     """
