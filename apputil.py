@@ -6,44 +6,46 @@ import matplotlib.pyplot as plt
 
 def update_board(current_board):
     """Creating a function that takes in a binary NumPy array,
-    and executes one step of Conway's game of life for this array."""
+    and executes one step of Conway's Game of Life for this array."""
     
     # Create a copy to store the next state
     new_board = np.zeros(current_board.shape, dtype=int)
     
-    # Define neighbors' relative positions
-    neighbors = [(-1, -1), (-1, 0), (-1, 1),
-                 (0, -1),          (0, 1),
-                 (1, -1),  (1, 0),  (1, 1)]
+    # Get the number of rows and columns
+    rows, cols = current_board.shape
     
     # Iterate over each cell
-    for i in range(current_board.shape[0]):
-        for j in range(current_board.shape[1]):
-            # Count live neighbors
-            live_neighbors = sum(
-                current_board[(i + dx) % current_board.shape[0],
-                              (j + dy) % current_board.shape[1]]
-                for dx, dy in neighbors
-            )
+    for i in range(rows):
+        for j in range(cols):
             
-            # Apply Conway's rules
+            # Count live neighbors without wrapping around edges
+            live_neighbors = 0
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    if dx == 0 and dy == 0:
+                        continue  
+                    ni, nj = i + dx, j + dy
+                    if 0 <= ni < rows and 0 <= nj < cols:
+                        live_neighbors += current_board[ni, nj]
+            
+            # Apply Conway's four rules
             if current_board[i, j] == 1:
-                # Currently alive
+                
+                # Rule 1 & 3: Survive with 2 or 3 neighbors; otherwise die
                 if live_neighbors < 2 or live_neighbors > 3:
                     new_board[i, j] = 0
                 else:
                     new_board[i, j] = 1
             else:
-                # Currently dead; becomes alive if exactly 3 neighbors
+                # Rule 4: Become alive if exactly 3 neighbors
                 if live_neighbors == 3:
-                    new_board[i, j] = 1  
+                    new_board[i, j] = 1
     
-    # Setting the updated_board variable
+    # Setting the updated_board variable (to satisfy template)
     updated_board = new_board
     
     # Returning result
     return updated_board
-
 
 def show_game(game_board, n_steps=10, pause=0.5):
     """
